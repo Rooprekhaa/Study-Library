@@ -1,0 +1,17 @@
+rules_version = '2';
+
+// NOT USED — this app no longer uploads files to Firebase Storage.
+// Contributing material only writes links to Firestore now (see firestore.rules),
+// specifically to avoid Firebase's requirement that Storage be enabled on the
+// paid Blaze plan (even though usage within the free tier is $0, Google requires
+// a billing account on file to activate Storage at all).
+//
+// This file is kept only in case you want to re-enable file uploads later.
+// It's safe to leave Storage disabled entirely in your Firebase project.
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

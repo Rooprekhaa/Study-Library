@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ROOPREKHAA| Admin</title>
+<link rel="icon" href="assets/logo-black.svg">
+<link rel="stylesheet" href="style.css">
+<script>
+  try { if (localStorage.getItem('als-theme') === 'dark') document.documentElement.setAttribute('data-theme','dark'); } catch(e) {}
+</script>
+<style>
+  .admin-tabs{display:flex; gap:10px; margin-bottom:22px; flex-wrap:wrap;}
+  .admin-tabs button{
+    font-weight:700; font-size:12.5px; background:var(--surface); border:1px solid var(--border); color:var(--text-600);
+    padding:8px 16px; border-radius:999px; cursor:pointer;
+  }
+  .admin-tabs button.active{border-color:var(--blue); color:var(--blue); background:rgba(47,111,237,.08);}
+  #loginScreen{min-height:70vh; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:16px; text-align:center;}
+  #adminScreen .material-grid{margin-bottom:40px;}
+  .kind-row{display:flex; gap:10px; margin-top:8px;}
+  .kind-row label{display:flex; align-items:center; gap:6px; font-weight:500; font-size:13px; color:var(--text-900); margin:0; text-transform:none;}
+  .sub-row{display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid var(--border); font-size:13.5px;}
+  .sub-row:last-child{border-bottom:none;}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap row">
+    <div class="brand">
+      <div class="logo logo-img"><img src="assets/logo-black.svg" alt="ROOPREKHAA logo"></div>
+      <div class="name"><img src="assets/wordmark-black.svg" alt="ROOPREKHAA" class="wordmark-img"></div>
+    </div>
+    <div style="flex:1;"></div>
+    <div style="display:flex; align-items:center; gap:12px; font-size:13px; color:var(--text-600);">
+      <button class="icon-btn" id="themeToggleBtn" title="Toggle theme">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="themeIcon"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </button>
+      <span id="adminEmail"></span>
+      <button class="btn btn-sm" id="logoutBtn" style="display:none;">Sign out</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <div id="loginScreen">
+    <p class="eyebrow" style="justify-content:center;">Restricted access</p>
+    <h1 style="font-size:26px; margin:0; font-weight:800;">Sign in to review submissions</h1>
+    <button class="btn btn-primary" id="loginBtn">Sign in with Google</button>
+    <div class="error-msg" id="loginError" style="text-align:center; max-width:340px;"></div>
+  </div>
+
+  <div id="adminScreen" style="display:none; padding-top:28px;">
+    <div class="admin-tabs">
+      <button id="tabPending" class="active">Pending (<span id="pendingCount">0</span>)</button>
+      <button id="tabApproved">Published (<span id="approvedCount">0</span>)</button>
+      <button id="tabAnnouncements">Announcements</button>
+      <button id="tabSubscribers">Subscribers (<span id="subCount">0</span>)</button>
+    </div>
+
+    <div class="material-grid" id="pendingList"></div>
+    <div class="material-grid" id="approvedList" style="display:none;"></div>
+
+    <div id="announcementsPanel" style="display:none;">
+      <div class="tile" style="cursor:default; max-width:520px; margin-bottom:24px;">
+        <label for="annTitle">Title</label>
+        <input type="text" id="annTitle" placeholder="e.g. Semester 5 result declared">
+        <label>Type</label>
+        <div class="kind-row">
+          <label><input type="radio" name="annKind" value="new" checked> New</label>
+          <label><input type="radio" name="annKind" value="update"> Update</label>
+          <label><input type="radio" name="annKind" value="info"> Info</label>
+        </div>
+        <label for="annBody">Body (optional)</label>
+        <textarea id="annBody" placeholder="Short details..."></textarea>
+        <label for="annLink">Link (optional)</label>
+        <input type="text" id="annLink" placeholder="https://...">
+        <div class="form-actions"><button class="btn btn-primary btn-sm" id="postAnnBtn">Post announcement</button></div>
+        <div class="error-msg" id="annError"></div>
+      </div>
+      <div class="announce-grid" id="annList"></div>
+    </div>
+
+    <div id="subscribersPanel" style="display:none;">
+      <div class="panel" style="max-width:520px;">
+        <div class="panel-head"><h3>Newsletter subscribers</h3><button class="btn btn-sm" id="exportSubsBtn">Export CSV</button></div>
+        <div id="subList"></div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer class="site-footer" style="padding:20px 0;">
+  <div class="wrap footer-bottom" style="border-top:none;">
+    <span>Admin view · changes are live immediately</span>
+    <span>Last updated: <span id="footerUpdated">—</span></span>
+  </div>
+</footer>
+
+<script type="module" src="admin.js"></script>
+</body>
+</html>
